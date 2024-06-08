@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QNetworkDatagram>
+#include <QDebug>
 
 class SnmpParse : public QObject
 {

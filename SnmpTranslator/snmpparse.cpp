@@ -8,5 +8,5 @@ SnmpParse::SnmpParse(QObject *parent)
 
 void SnmpParse::receivePacketSnmp(const QNetworkDatagram datagram)
 {
-
+    qDebug() << "SnmpParse::receivePacketSnmp Address" << datagram.senderAddress() << "Port:" << datagram.senderPort();
 }
