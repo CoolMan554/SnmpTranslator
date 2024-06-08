@@ -1,5 +1,7 @@
 #include "snmptrapserver.h"
 
+quint32 SnmpTrapServer::countSuccessTraps {0};
+
 SnmpTrapServer::SnmpTrapServer(QObject *parent)
     : QObject{parent}
 {
@@ -60,6 +62,7 @@ void SnmpTrapServer::slotReadyRead()
     while(udpSocket->hasPendingDatagrams())
     {
         const QNetworkDatagram datagram = udpSocket->receiveDatagram();
+        qDebug() << "SnmpTrapServer::slotReadyRead::countSuccessTraps::" << ++countSuccessTraps;
         emit processTheDatagram(datagram);
     }
 }

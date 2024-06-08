@@ -15,6 +15,7 @@ public:
     explicit SnmpTrapServer(QObject *parent = nullptr);
     ~SnmpTrapServer();
 private:
+    static quint32 countSuccessTraps;
     QUdpSocket *udpSocket{};
     SnmpParse *snmpParse{};
     QThread *snmpParseThread{};
