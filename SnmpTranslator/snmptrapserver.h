@@ -5,6 +5,7 @@
 #include <QUdpSocket>
 #include <QNetworkDatagram>
 #include <QThread>
+#include <QTimer>
 #include "snmpparse.h"
 
 class SnmpTrapServer : public QObject
@@ -17,7 +18,10 @@ private:
     QUdpSocket *udpSocket{};
     SnmpParse *snmpParse{};
     QThread *snmpParseThread{};
+    int periodReconnect{10};
     void initSnmpParse();
+    void checkUdpSocket();
+
 
 private slots:
     void slotReadyRead();
@@ -25,6 +29,7 @@ private slots:
 
 signals:
     void processTheDatagram(const QNetworkDatagram datagram);
+    void Reconnect();
 };
 
 #endif // SNMPTRAPSERVER_H
