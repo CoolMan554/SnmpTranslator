@@ -12,6 +12,7 @@ SnmpTrapServer::SnmpTrapServer(QObject *parent)
         udpSocket->bind(QHostAddress::Any, 1162);
         QTimer::singleShot(periodReconnect * 1000, this, &SnmpTrapServer::checkUdpSocket);
     });
+    connect(udpSocket, &QAbstractSocket::errorOccurred, this, &SnmpTrapServer::ServerSocketError);
     connect(udpSocket, &QUdpSocket::readyRead, this, &SnmpTrapServer::slotReadyRead);
     connect(snmpParseThread, &QThread::finished, snmpParseThread, &QThread::deleteLater);
     connect(this, &SnmpTrapServer::processTheDatagram, snmpParse, &SnmpParse::receivePacketSnmp, Qt::QueuedConnection);
@@ -38,6 +39,7 @@ void SnmpTrapServer::initSnmpParse()
 {
     snmpParse = new SnmpParse();
     snmpParseThread = new QThread();
+    snmpParseThread->setObjectName("SnmpParse");
     snmpParse->moveToThread(snmpParseThread);
     snmpParseThread->start();
 }
@@ -57,7 +59,12 @@ void SnmpTrapServer::slotReadyRead()
 {
     while(udpSocket->hasPendingDatagrams())
     {
-        QNetworkDatagram datagram = udpSocket->receiveDatagram();
+        const QNetworkDatagram datagram = udpSocket->receiveDatagram();
         emit processTheDatagram(datagram);
     }
+}
+
+void SnmpTrapServer::ServerSocketError(QAbstractSocket::SocketError socketError)
+{
+    qDebug() << "SnmpTrapServer::ServerSocketError" << socketError;
 }
