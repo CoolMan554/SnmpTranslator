@@ -12,6 +12,7 @@ SnmpTrapServer::SnmpTrapServer(QObject *parent)
     connect(this, &SnmpTrapServer::Reconnect, [this]()
     {
         udpSocket->bind(QHostAddress::Any, 1162);
+        udpSocket->setSocketOption(QAbstractSocket::SocketOption::ReceiveBufferSizeSocketOption, 26214400);//Выделяем 50Мб буфера для принятие пакетов
         QTimer::singleShot(periodReconnect * 1000, this, &SnmpTrapServer::checkUdpSocket);
     });
     connect(udpSocket, &QAbstractSocket::errorOccurred, this, &SnmpTrapServer::ServerSocketError);
