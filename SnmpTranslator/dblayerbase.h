@@ -5,10 +5,7 @@
 #include <QDebug>
 #include <QDateTime>
 #include <QTimeZone>
-#include <QtSql/QSqlDriver>
-#include <QtSql/QSqlDatabase>
-#include <QtSql/QSqlError>
-#include <QtSql/QSqlQuery>
+#include <QtSql>
 
 class DbLayerBase : public QObject
 {

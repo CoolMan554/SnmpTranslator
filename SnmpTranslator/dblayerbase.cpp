@@ -3,7 +3,7 @@
 DbLayerBase::DbLayerBase(QObject *parent)
     : QObject{parent}
 {
-    db.addDatabase("QPSQL");
+    db = QSqlDatabase::addDatabase("QPSQL");
     db.setHostName(this->getDbHost());
     db.setDatabaseName(this->getDbName());
     db.setPort(this->getDbPort());
