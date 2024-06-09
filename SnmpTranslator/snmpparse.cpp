@@ -23,7 +23,9 @@ SnmpParse::~SnmpParse()
 void SnmpParse::receivePacketSnmp(const QNetworkDatagram datagram)
 {
     QMutexLocker locker(mutex);
-    qDebug() << "SnmpParse::receivePacketSnmp Address" << datagram.senderAddress() << "Port:" << datagram.senderPort() << datagram.data();
+    quint32 ipv4 = datagram.senderAddress().toIPv4Address();
+    QHostAddress address = QHostAddress(ipv4);
+    qDebug() << "SnmpParse::receivePacketSnmp Address" << address << "Port:" << datagram.senderPort() << datagram.data();
     if(dbLayer)
     {
         dbLayer->insertSqlCommand(datagram.data());//Добавление записи в базу
