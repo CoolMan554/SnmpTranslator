@@ -29,7 +29,7 @@ bool DbLayerBase::isDbReady() const
 
 void DbLayerBase::insertSqlCommand(const QString &data)
 {
-    QString strCommand = QString("INSERT INTO (eventin, additionalinfo) VALUES (:eventin, :additionalinfo)");
+    QString strCommand = QString("INSERT INTO event (eventin, additionalinfo) VALUES (:eventin, :additionalinfo)");
     preparedQuery(strCommand, data);
 }
 
@@ -45,7 +45,7 @@ void DbLayerBase::preparedQuery(const QString &query, const QString &data)
     q.bindValue(":additionalinfo", data);
     q.exec();
 
-    if(!q.isValid() || q.lastError().isValid())
+    if(!q.isValid() || !q.lastError().isValid())
     {
         qDebug() << "DbLayerBase::execQuery Ошибка в запросе " << q.lastError().text();
     }
