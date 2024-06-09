@@ -41,7 +41,7 @@ void DbLayerBase::preparedQuery(const QString &queryStr, const QString &data)
     }
     QSqlQuery q(getDb());
     q.prepare(queryStr);
-    q.bindValue(":eventin", QDateTime::currentDateTime().toTimeZone(QTimeZone::systemTimeZone()).toString(Qt::ISODate));
+    q.bindValue(":eventin", QDateTime::currentDateTime());
     q.bindValue(":additionalinfo", data);
     bool result = q.exec();
 
