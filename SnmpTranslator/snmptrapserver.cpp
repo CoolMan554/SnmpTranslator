@@ -8,16 +8,17 @@ SnmpTrapServer::SnmpTrapServer(QObject *parent)
     udpSocket = new QUdpSocket(this);
     initSnmpParse();
     udpSocket->bind(QHostAddress::Any, 1162);
-    udpSocket->setSocketOption(QAbstractSocket::SocketOption::ReceiveBufferSizeSocketOption, 262144000);//Выделяем 50Мб буфера для принятие пакетов
+    udpSocket->setSocketOption(QAbstractSocket::SocketOption::ReceiveBufferSizeSocketOption, 262144000);//Выделяем 500Мб буфера для принятие пакетов
     connect(this, &SnmpTrapServer::Reconnect, [this]()
     {
         udpSocket->bind(QHostAddress::Any, 1162);
-        udpSocket->setSocketOption(QAbstractSocket::SocketOption::ReceiveBufferSizeSocketOption, 262144000);//Выделяем 50Мб буфера для принятие пакетов
+        udpSocket->setSocketOption(QAbstractSocket::SocketOption::ReceiveBufferSizeSocketOption, 262144000);//Выделяем 500Мб буфера для принятие пакетов
         QTimer::singleShot(periodReconnect * 1000, this, &SnmpTrapServer::checkUdpSocket);
     });
     connect(udpSocket, &QAbstractSocket::errorOccurred, this, &SnmpTrapServer::ServerSocketError);
     connect(udpSocket, &QUdpSocket::readyRead, this, &SnmpTrapServer::slotReadyRead);
     connect(snmpParseThread, &QThread::finished, snmpParseThread, &QThread::deleteLater);
+    connect(snmpParseThread, &QThread::started, snmpParse, &SnmpParse::initDataBase);
     connect(this, &SnmpTrapServer::processTheDatagram, snmpParse, &SnmpParse::receivePacketSnmp, Qt::QueuedConnection);
     checkUdpSocket();
 }
