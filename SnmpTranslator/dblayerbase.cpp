@@ -27,13 +27,13 @@ bool DbLayerBase::isDbReady() const
     return getDb().isOpen();
 }
 
-void DbLayerBase::insertSqlCommand(const QString &data)
+void DbLayerBase::insertSqlCommand(const QString &data, const QDateTime curTimeEvent)
 {
     QString strCommand = QString("INSERT INTO event (eventin, additionalinfo) VALUES (:eventin, :additionalinfo)");
-    preparedQuery(strCommand, data);
+    preparedQuery(strCommand, data, curTimeEvent);
 }
 
-void DbLayerBase::preparedQuery(const QString &queryStr, const QString &data)
+void DbLayerBase::preparedQuery(const QString &queryStr, const QString &data, const QDateTime curTimeEvent)
 {
     if(!isDbReady())
     {
@@ -41,7 +41,7 @@ void DbLayerBase::preparedQuery(const QString &queryStr, const QString &data)
     }
     QSqlQuery q(getDb());
     q.prepare(queryStr);
-    q.bindValue(":eventin", QDateTime::currentDateTime());
+    q.bindValue(":eventin", curTimeEvent);
     q.bindValue(":additionalinfo", data);
     bool result = q.exec();
 

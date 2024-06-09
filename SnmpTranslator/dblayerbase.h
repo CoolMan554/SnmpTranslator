@@ -20,7 +20,7 @@ public:
     QString getDbPass() const { return DB_PASS; }
     QSqlDatabase getDb() const { return db; }
     bool isDbReady() const;
-    void insertSqlCommand(const QString &data);
+    void insertSqlCommand(const QString &data, const QDateTime curTimeEvent);
 private:
     QSqlDatabase db;
     QString DB_HOST = QStringLiteral("127.0.0.1");
@@ -28,7 +28,7 @@ private:
     QString DB_NAME = QStringLiteral("snmp");
     QString DB_USER = QStringLiteral("snmp");
     QString DB_PASS = QStringLiteral("snmp");
-    void preparedQuery(const QString &queryStr, const QString &data);
+    void preparedQuery(const QString &queryStr, const QString &data, const QDateTime curTimeEvent);
 
 signals:
 
