@@ -18,9 +18,7 @@ SnmpTrapServer::SnmpTrapServer(QObject *parent)
     connect(udpSocket, &QAbstractSocket::errorOccurred, this, &SnmpTrapServer::ServerSocketError);
     connect(udpSocket, &QUdpSocket::readyRead, this, &SnmpTrapServer::slotReadyRead);
     connect(snmpParseThread, &QThread::finished, snmpParseThread, &QThread::deleteLater);
-    connect(snmpParseThread, &QThread::started, snmpParse, &SnmpParse::initDataBase);
-    connect(this, &SnmpTrapServer::processTheDatagram, snmpParse, &SnmpParse::receivePacketSnmp, Qt::QueuedConnection);
-    snmpParseThread->start();
+    connect(this, &SnmpTrapServer::processTheDatagram, snmpParse, &SnmpParse::receivePacketSnmp, Qt::QueuedConnection);    
     checkUdpSocket();
 }
 
@@ -46,6 +44,8 @@ void SnmpTrapServer::initSnmpParse()
     snmpParseThread = new QThread();
     snmpParseThread->setObjectName("SnmpParse");
     snmpParse->moveToThread(snmpParseThread);
+    connect(snmpParseThread, &QThread::started, snmpParse, &SnmpParse::initDataBase);
+    snmpParseThread->start();
 }
 
 void SnmpTrapServer::checkUdpSocket()
