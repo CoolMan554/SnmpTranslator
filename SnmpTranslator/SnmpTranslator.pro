@@ -1,8 +1,11 @@
 QT -= gui
-QT += network
+QT += network sql
 
 CONFIG += c++17 console
 CONFIG -= app_bundle
+
+#INCLUDEPATH += /usr/lib/x86_64-linux-gnu/
+#LIBS += /usr/lib/x86_64-linux-gnu/libpq.so.5
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
