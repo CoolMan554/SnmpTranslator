@@ -28,7 +28,7 @@ private:
     QString DB_NAME = QStringLiteral("snmp");
     QString DB_USER = QStringLiteral("snmp");
     QString DB_PASS = QStringLiteral("snmp");
-    void preparedQuery(const QString &query, const QString &data);
+    void preparedQuery(const QString &queryStr, const QString &data);
 
 signals:
 

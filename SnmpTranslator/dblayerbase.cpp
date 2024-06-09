@@ -33,19 +33,19 @@ void DbLayerBase::insertSqlCommand(const QString &data)
     preparedQuery(strCommand, data);
 }
 
-void DbLayerBase::preparedQuery(const QString &query, const QString &data)
+void DbLayerBase::preparedQuery(const QString &queryStr, const QString &data)
 {
     if(!isDbReady())
     {
         qDebug() << "DbLayerBase:: Нет соединения с базой" << db.lastError().text();
     }
     QSqlQuery q(getDb());
-    q.prepare(query);
+    q.prepare(queryStr);
     q.bindValue(":eventin", QDateTime::currentDateTime().toTimeZone(QTimeZone::systemTimeZone()).toString(Qt::ISODate));
     q.bindValue(":additionalinfo", data);
-    q.exec();
+    bool result = q.exec();
 
-    if(!q.isValid() || !q.lastError().isValid())
+    if(!result)
     {
         qDebug() << "DbLayerBase::execQuery Ошибка в запросе " << q.lastError().text();
     }
