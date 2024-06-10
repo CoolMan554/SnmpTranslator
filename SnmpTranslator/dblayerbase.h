@@ -21,6 +21,7 @@ public:
     QSqlDatabase getDb() const { return db; }
     bool isDbReady() const;
     void insertSqlCommand(const QString &data, const QDateTime curTimeEvent);
+    bool ReconnectBase();
 private:
     QSqlDatabase db;
     QString DB_HOST = QStringLiteral("127.0.0.1");

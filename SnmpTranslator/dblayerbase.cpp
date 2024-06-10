@@ -33,11 +33,23 @@ void DbLayerBase::insertSqlCommand(const QString &data, const QDateTime curTimeE
     preparedQuery(strCommand, data, curTimeEvent);
 }
 
+bool DbLayerBase::ReconnectBase()
+{
+    if(!db.open())
+    {
+        qDebug() << "ReconnectBase:: Нет соединения с базой" << db.lastError().text();
+        return false;
+    }
+    return true;
+}
+
 void DbLayerBase::preparedQuery(const QString &queryStr, const QString &data, const QDateTime curTimeEvent)
 {
     if(!isDbReady())
     {
         qDebug() << "DbLayerBase:: Нет соединения с базой" << db.lastError().text();
+        if(!ReconnectBase())
+            return;
     }
     QSqlQuery q(getDb());
     q.prepare(queryStr);
